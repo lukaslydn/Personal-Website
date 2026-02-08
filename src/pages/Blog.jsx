@@ -44,26 +44,64 @@ function Blog() {
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  // ---- FETCH POSTS ----
+
+  const [selectedTagIds, setSelectedTagIds] = useState([])
+
+
+
   useEffect(() => {
-    async function fetchPosts() {
-      const { data, error } = await supabase
-        .from("posts")
-        .select("id, title, content, created_at, slug, previewimagebanner, previewtext, tags")
-        .eq("published", true)
-        .order("created_at", { ascending: false });
+    loadTags()
+  }, [])
 
-      if (error) {
-        console.error("Error loading posts:", error);
-      } else {
-        setPosts(data);
-      }
+  useEffect(() => {
+    fetchPosts(selectedTagIds);
+  }, [selectedTagIds]);
 
-      setLoading(false);
+  async function loadTags() {
+    const { data, error } = await supabase
+      .from("tags")
+      .select("id, tag, icon, color")
+      .order("tag")
+
+    if (error) {
+      console.error(error)
+      return
     }
 
-    fetchPosts();
-  }, []);
+    setTags(data || [])
+    return(tags)
+  }
+
+  // ---- FETCH POSTS ----
+
+  async function fetchPosts(selectedTags) {
+    let query = supabase
+      .from("posts")
+      .select(
+        "id, title, content, created_at, slug, previewimagebanner, previewtext, tags"
+      )
+      .eq("published", true)
+      .order("created_at", { ascending: false });
+
+    // Only filter when tags are provided
+    if (selectedTags.length > 0) {
+      query = query.or(
+        selectedTags.map(id => `tags.cs.[${id}]`).join(',')
+      );
+    }
+
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error loading posts:", error);
+    } else {
+      setPosts(data);
+    }
+
+    setLoading(false);
+  }
+
 
   // Helper function to get first text content from blocks
   function getFirstTextContent(content, wordLimit = 50) {
@@ -105,7 +143,11 @@ function Blog() {
   return (
     <div className="container">
       <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>Blog</h1>
-
+      <TagDropdown
+        tags={tags}
+        selectedTagIds={selectedTagIds}
+        setSelectedTagIds={setSelectedTagIds}
+      />
       {posts.length === 0 && <p style={{ textAlign: "center" }}>No posts yet.</p>}
 
       {posts.map((post) => {
@@ -202,6 +244,105 @@ function renderTagPills(allTags, postTagIds) {
     })
     .filter(Boolean)
 }
+
+
+function TagDropdown({ tags, selectedTagIds, setSelectedTagIds, createTag }) {
+
+  const TAG_COLORS = [
+    "#0a8dffff", // Blue
+    "#00ff40ff", // Green
+    "#FF9F0A", // Orange
+    "#ff0d00ff", // Red
+    "#aa00ffff",  // Purple
+    "#ffdd00ff"
+  ]
+
+  const [mode, setMode] = useState("select") // select | create
+  const [newTag, setNewTag] = useState("")
+  const [newIcon, setNewIcon] = useState("")
+  const [newColor, setNewColor] = useState(TAG_COLORS[0])
+
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  function selectTag(id) {
+    setSelectedTagIds(prev =>
+      prev.includes(id) ? prev : [...prev, id]
+    )
+    setIsOpen(false) // ⬅️ close menu on select
+  }
+
+  function removeTag(id) {
+    setSelectedTagIds(prev =>
+      prev.filter(t => t !== id)
+    )
+  }
+
+  return (
+    <div className="tag-select">
+      {/* Selected pills */}
+      <div className="tag-pills">
+        {selectedTagIds.map(id => {
+          const tag = tags.find(t => t.id === id)
+          if (!tag) return null
+
+          return (
+            <span
+              key={id}
+              className="tag-pill"
+              style={{ "--tag-bg": tag.color, color: isColorDark(tag.color) ? "#fff" : "#111" }}
+              onClick={() => removeTag(id)}
+            >
+              {tag.icon && <ion-icon name={tag.icon} />}
+              {tag.tag}
+              <ion-icon name="close" />
+            </span>
+          )
+        })}
+      </div>
+
+      {/* Toggle */}
+      <button
+        type="button"
+        className="tag-toggle"
+        onClick={() => setIsOpen(o => !o)}
+      >
+        {isOpen ? "Close tags" : "Add tags"}
+      </button>
+
+      {/* Floating dropdown */}
+
+
+      {isOpen && (
+        <div className="tag-dropdown floating">
+
+          {/* SELECT MODE */}
+          {mode === "select" && (
+            <>
+              {tags
+                .filter(tag => !selectedTagIds.includes(tag.id))
+                .map(tag => (
+                  <div
+                    key={tag.id}
+                    className="tag-option"
+                    onClick={() => selectTag(tag.id)}
+                    style={{ "--tag-bg": tag.color,
+                      color: isColorDark(tag.color) ? "#fff" : "#111"
+                     }}
+                  >
+                    {tag.icon && <ion-icon name={tag.icon} />}
+                    <span>{tag.tag}</span>
+                  </div>
+                ))}
+            </>
+          )}
+        </div>
+      )}
+
+    </div>
+  )
+}
+
 
 
 function isColorDark(hex) {

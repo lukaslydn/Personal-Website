@@ -189,3 +189,7 @@
   color: inherit;
   font-size: 0.9rem;
 }
+
+.tag-select {
+  margin: 2rem 0;
+}

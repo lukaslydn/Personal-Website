@@ -197,7 +197,6 @@ async function loadTags() {
             selectedTagIds={selectedTagIds}
             setSelectedTagIds={setSelectedTagIds}
             createTag={createTag}
-
           />
             <div className="post-editor">
               <div className="preview-section">
