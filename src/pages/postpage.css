@@ -1,0 +1,281 @@
+.container {
+    width: 100%;
+}
+
+.post-page {
+  border-radius: 16px;
+  width: 100%;
+}
+
+/* Post Header */
+.post-header {
+  margin-bottom: 2.5rem;
+}
+
+.post-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.post-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.post-date {
+  opacity: 0.7;
+  color: white;
+  font-size: 0.95rem;
+}
+
+/* Banner/Preview Image */
+.post-banner {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.post-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Post Body */
+.post-body {
+  line-height: 1.8;
+  color: white;
+  font-size: 1.05rem;
+}
+
+.content-block {
+  margin-bottom: 1.5rem;
+}
+
+/* Text Block Styles */
+.text-block {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.text-block p {
+  margin-bottom: 1rem;
+}
+
+.text-block h1,
+.text-block h2,
+.text-block h3,
+.text-block h4,
+.text-block h5,
+.text-block h6 {
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.text-block h1 {
+  font-size: 2rem;
+}
+
+.text-block h2 {
+  font-size: 1.75rem;
+}
+
+.text-block h3 {
+  font-size: 1.5rem;
+}
+
+.text-block h4 {
+  font-size: 1.25rem;
+}
+
+.text-block strong,
+.text-block b {
+  font-weight: 700;
+  color: #111827;
+}
+
+.text-block em,
+.text-block i {
+  font-style: italic;
+}
+
+.text-block a {
+  color: rgb(0, 183, 255);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.text-block a:hover {
+  color: rgb(2, 158, 220);
+}
+
+.text-block ul,
+.text-block ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.text-block li {
+  margin-bottom: 0.5rem;
+}
+
+.text-block code {
+  background-color: #f3f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+  color: #ef4444;
+}
+
+.text-block pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.text-block pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+.text-block blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Highlight (yellow background from editor) */
+.text-block span[style*="background-color: yellow"],
+.text-block span[style*="background-color:yellow"] {
+  background-color: #fef08a !important;
+  padding: 0.1rem 0.2rem;
+  border-radius: 2px;
+}
+
+/* Image Block Styles */
+.image-block {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0;
+}
+
+.image-block img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Post Not Found */
+.post-not-found {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.post-not-found h1 {
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.post-not-found p {
+  color: #ffffff;
+  opacity: 0.7;
+  font-size: 1.1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .post-page {
+    padding: 1.5rem;
+  }
+
+  .post-title {
+    font-size: 1.75rem;
+  }
+
+  .post-body {
+    font-size: 1rem;
+  }
+
+  .text-block h1 {
+    font-size: 1.5rem;
+  }
+
+  .text-block h2 {
+    font-size: 1.35rem;
+  }
+
+  .text-block h3 {
+    font-size: 1.2rem;
+  }
+
+  .image-block {
+    margin: 1.5rem 0;
+  }
+
+  .post-banner {
+    margin: 1.5rem 0;
+  }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .post-page {
+    padding: 2rem 1.75rem;
+  }
+
+  .post-title {
+    font-size: 2.25rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+
+  .image-block img {
+    max-width: 700px;
+  }
+}
+
+.post-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 9px 15px;
+  border-radius: 999px;
+
+  background-color: var(--tag-bg, #222);
+  font-size: 0.75rem;
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+.tag-pill ion-icon {
+  color: inherit;
+  font-size: 0.9rem;
+}
