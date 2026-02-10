@@ -1,7 +1,7 @@
-1️⃣ See what changed
+1️⃣ See what changed:
 git status
 
-2️⃣ Stage changes
+2️⃣ Stage changes:
 
 Everything:
 

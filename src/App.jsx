@@ -5,7 +5,7 @@ import Projects from "./pages/Projects.jsx"
 import Admin from "./pages/Admin.jsx"
 import PostPage from "./pages/postPage.jsx"
 import BottomModal from "./components/bottomModal.jsx"
-
+import NotFoundPage from "./components/notfoundpage.jsx"
 import NavBar from "./components/NavBar.jsx"
 
 
@@ -21,7 +21,7 @@ export default function App() {
           <Route path="/posts/:slug" element={<PostPage />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="*" element={<p>Page not found.</p>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
 
