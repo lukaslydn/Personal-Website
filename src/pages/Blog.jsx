@@ -202,11 +202,13 @@ function Blog() {
                 )}
 
                 <p className="post-date" style={{color: 'black'}}>
-                  {new Date(post.created_at).toLocaleDateString("eu", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                  <time className="post-date"  style={{color: 'black'}}>
+                    {new Date(post.created_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
                 </p>
               </div>
             </Link>
@@ -256,12 +258,6 @@ function TagDropdown({ tags, selectedTagIds, setSelectedTagIds, createTag }) {
     "#aa00ffff",  // Purple
     "#ffdd00ff"
   ]
-
-  const [mode, setMode] = useState("select") // select | create
-  const [newTag, setNewTag] = useState("")
-  const [newIcon, setNewIcon] = useState("")
-  const [newColor, setNewColor] = useState(TAG_COLORS[0])
-
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -315,9 +311,6 @@ function TagDropdown({ tags, selectedTagIds, setSelectedTagIds, createTag }) {
 
       {isOpen && (
         <div className="tag-dropdown floating">
-
-          {/* SELECT MODE */}
-          {mode === "select" && (
             <>
               {tags
                 .filter(tag => !selectedTagIds.includes(tag.id))
@@ -335,7 +328,6 @@ function TagDropdown({ tags, selectedTagIds, setSelectedTagIds, createTag }) {
                   </div>
                 ))}
             </>
-          )}
         </div>
       )}
 

@@ -8,19 +8,18 @@ export default function Home() {
       {/* Hero Card */}
       <section className="heroCard">
         <h1 style={{ margin: 0, fontSize: "1.5rem", fontWeight: 500 }}>
-          👋
+          Welcome 👋
         </h1>
 
         <p
           style={{
             marginTop: "0.75rem",
-            color: "var(--muted)",
             fontSize: "0.95rem",
             lineHeight: 1.6,
           }}
         >
-          I write about things I’m building, learning, and thinking about.
-          Minimal. Honest. Personal.
+          I post about things I’m building, learning, and thinking about.
+          Keeping things Minimal. Honest. Personal.
         </p>
       </section>
 
@@ -32,7 +31,7 @@ export default function Home() {
           gap: "1rem",
         }}
       >
-        <Card title="Blog" subtitle="Writing & thoughts" />
+        <Card title="Blog 🚀" subtitle="Writing & thoughts" />
         <Card title="Projects" subtitle="Things I’ve made" />
         <Card title="About" subtitle="Me, briefly" />
         <Card title="Contact" subtitle="Say hello" />
