@@ -710,6 +710,7 @@ const FloatingToolbar = ({ position }) => {
     try {
       const span = document.createElement("span");
       span.style.backgroundColor = "yellow";
+      span.className = "highlight";
       range.surroundContents(span);
     } catch {
       // fallback for complex selections

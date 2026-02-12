@@ -113,6 +113,13 @@
   transition: color 0.2s ease;
 }
 
+.highlight {
+  color: #000;
+}
+b {
+  color: #ffffff;
+}
+
 .text-block a:hover {
   color: rgb(2, 158, 220);
 }
