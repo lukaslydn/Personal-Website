@@ -113,12 +113,14 @@
   transition: color 0.2s ease;
 }
 
+.text-block b {
+  color: #ffffff;
+}
+
 .highlight {
   color: #000;
 }
-b {
-  color: #ffffff;
-}
+
 
 .text-block a:hover {
   color: rgb(2, 158, 220);
@@ -177,12 +179,13 @@ b {
 /* Image Block Styles */
 .image-block {
   display: flex;
-  justify-content: center;
+
   margin: 2.5rem 0;
 }
 
 .image-block img {
   max-width: 100%;
+  max-height: 500px;
   height: auto;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

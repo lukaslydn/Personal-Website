@@ -385,6 +385,19 @@
   cursor: pointer;
   font-size: 0.9rem;
 }
+.delete-tag {
+  margin-left: auto;
+  background: #fff;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  color: #ff0000;
+  cursor: pointer;
+}
 
 .tag-toggle{
   margin-top: 6px;

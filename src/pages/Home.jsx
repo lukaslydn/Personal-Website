@@ -31,10 +31,10 @@ export default function Home() {
           gap: "1rem",
         }}
       >
-        <Card title="Blog 🚀" subtitle="Writing & thoughts" />
-        <Card title="Projects" subtitle="Things I’ve made" />
-        <Card title="About" subtitle="Me, briefly" />
-        <Card title="Contact" subtitle="Say hello" />
+        <Card title="Blog" subtitle="Writing & thoughts 🚀" />
+        <Card title="Projects" subtitle="Things I’ve made 🛠️" />
+        <Card title="About" subtitle="Me, briefly 👋" />
+        <Card title="Contact" subtitle="Say hello 📩" />
       </section>
     </div>
     </div>
