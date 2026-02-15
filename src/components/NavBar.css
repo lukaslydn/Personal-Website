@@ -11,25 +11,35 @@
 /* The pill */
 .navbar {
   max-width: 1100px;
+  min-height: 50px;
+  width: 100%;
   margin: 0 auto;
   padding: 0.75rem 1.25rem;
   display: flex;
   align-items: center;
   position: relative;
 
-
   background: rgba(255, 255, 255, 0.20);
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(7px) saturate(1);
   -webkit-backdrop-filter: blur(7px) saturate(1);
   border-radius: 16px;
+
+  transition: 
+    width 0.35s ease,
+    padding 0.35s ease,
+    transform 0.35s ease;
 }
+
+
 
 
 /* Brand */
 .brand {
   font-weight: 500;
+  opacity: 1;
   white-space: nowrap;
+  transition: all 200ms ease-in-out;
 }
 
 /* Desktop centered links */
@@ -89,5 +99,15 @@
     transform: none;
     gap: 0.75rem;
     font-size: 0.85rem;
+  }
+}
+
+@media (min-width: 761px) {
+  .navbar.scrolled {
+    width: 30%;
+  }
+  .brand.hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 }

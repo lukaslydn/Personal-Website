@@ -20,60 +20,20 @@ const createImageBlock = (src = null, loading = false) => ({
 
 
 const PostEditor = ({ onChange, resetTrigger }) => {
+
+  // ===================== States & Refs =====================
   const [toolbarPos, setToolbarPos] = useState(null);
   const [blocks, setBlocks] = useState([createBlock()]);
-  const refs = useRef({});
-  const wrapperRef = useRef(null);
-  const fileInputRef = useRef(null);
+  const refs = useRef({}); // Refs for each block to manage focus and content
+  const wrapperRef = useRef(null); // Ref for the editor wrapper to check if selection is inside the editor
+  const fileInputRef = useRef(null); // Ref for the hidden file input to trigger it programmatically
 
   useEffect(() => {
     if (resetTrigger > 0) {
       setBlocks([createBlock()]);
       setToolbarPos(null);
     }
-  }, [resetTrigger]);
-
-
-  // Handle content changes while typing
-  const handleInput = (blockId) => {
-    setBlocks(prev => 
-      prev.map(b => 
-        b.id === blockId && b.type === "text"
-          ? { ...b, content: refs.current[blockId]?.innerHTML || "" }
-          : b
-      )
-    );
-  };
-
-  // Floating toolbar position update
-  const updateToolbarPosition = () => {
-    const selection = window.getSelection();
-
-    if (!selection || selection.isCollapsed) {
-      setToolbarPos(null);
-      return;
-    }
-
-    const range = selection.getRangeAt(0);
-    const container = range.commonAncestorContainer;
-
-    // Convert text node to element node if needed
-    const elementNode =
-      container.nodeType === 1 ? container : container.parentNode;
-
-    // 🚨 Important check
-    if (!wrapperRef.current?.contains(elementNode)) {
-      setToolbarPos(null);
-      return;
-    }
-
-    const rect = range.getBoundingClientRect();
-
-    setToolbarPos({
-      top: rect.top + window.scrollY - 40,
-      left: rect.left + rect.width / 2,
-    });
-  };
+  }, [resetTrigger]); // Resets the editor to a single empty block when resetTrigger changes, which is triggered from the parent component when a new post is created or after publishing to clear the editor for the next post.
 
 
   // Listen for text selections
@@ -107,6 +67,50 @@ const PostEditor = ({ onChange, resetTrigger }) => {
 
     onChange(data);
   }, [blocks, onChange]);
+
+
+
+  // Handle content changes while typing
+  const handleInput = (blockId) => {
+    setBlocks(prev => 
+      prev.map(b => 
+        b.id === blockId && b.type === "text"
+          ? { ...b, content: refs.current[blockId]?.innerHTML || "" }
+          : b
+      )
+    );
+  };
+
+  // Floating toolbar position update
+  const updateToolbarPosition = () => {
+    const selection = window.getSelection();
+
+    if (!selection || selection.isCollapsed) {
+      setToolbarPos(null);
+      return;
+    }
+
+    const range = selection.getRangeAt(0);
+    const container = range.commonAncestorContainer;
+
+    // Convert text node to element node if needed
+    const elementNode =
+      container.nodeType === 1 ? container : container.parentNode;
+
+    // 🚨 Important check
+    if (!wrapperRef.current?.contains(elementNode)) { // If the selection is outside the editor, we hide the toolbar and exit the function early to prevent it from showing up in the wrong place.
+      setToolbarPos(null);
+      return;
+    }
+
+    const rect = range.getBoundingClientRect();
+
+    setToolbarPos({
+      top: rect.top + window.scrollY - 40,
+      left: rect.left + rect.width / 2,
+    });
+  };
+
 
   // Add new text block
   const addBlock = () => {
@@ -169,7 +173,7 @@ const PostEditor = ({ onChange, resetTrigger }) => {
     return null;
   };
 
-  // Insert plain text at cursor
+  // Insert plain text at cursor (no styles)
   const insertPlainText = (text) => {
     const selection = window.getSelection();
     if (!selection || !selection.rangeCount) return;
@@ -193,7 +197,7 @@ const PostEditor = ({ onChange, resetTrigger }) => {
 
 
 
-  // Insert image block
+  // Insert image block (helper function)
   const insertImageBlock = async (file, blockId) => {
     const imageBlock = createImageBlock(null, true);
 
@@ -225,7 +229,7 @@ const PostEditor = ({ onChange, resetTrigger }) => {
     }
   };
 
-  // Handle file upload button
+  // Handle file upload button / direct paste
   const handleImageSelect = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -235,7 +239,6 @@ const PostEditor = ({ onChange, resetTrigger }) => {
 
     e.target.value = "";
   };
-
 
   // Handle paste events
   const handlePaste = async (e, blockId) => {

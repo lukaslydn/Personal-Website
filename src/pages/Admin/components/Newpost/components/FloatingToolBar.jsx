@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from "react";
 
 const FloatingToolbar = ({ position }) => {
   if (!position) return null;
 
   const cmd = (command, value = null) => {
     document.execCommand(command, false, value);
-  };
-
+  }; // Helper function to execute formatting commands on the selected text using the deprecated execCommand API. This is a simple way to implement basic rich text formatting, but it has limitations and may not work perfectly in all cases, which is why we have some fallback logic in the toggleHighlight function.
+  // FIX IN FUTURE: Consider replacing execCommand with a more robust solution for better formatting control and compatibility.
+  // Better more reliable approach needed for complex editing features and to avoid issues and inconsistencies and messy output
   
   const toggleHighlight = () => {
     const selection = window.getSelection();
@@ -56,7 +56,7 @@ const FloatingToolbar = ({ position }) => {
       // fallback for complex selections
       document.execCommand("backColor", false, "yellow");
     }
-  };
+  }; // Dodgey
 
 
   return (

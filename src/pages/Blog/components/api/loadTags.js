@@ -1,6 +1,6 @@
-import { supabase } from "../../../../../supabase-client"
+import { supabase } from "../../../../supabase-client"
 
-export async function loadTags() { //Loads all tags from the database
+export async function loadTags() {
   const { data, error } = await supabase
     .from("tags")
     .select("id, tag, icon, color")

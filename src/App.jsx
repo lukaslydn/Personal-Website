@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from "react-router-dom"
 import Home from "./pages/Home"
-import Blog from "./pages/Blog"
+import Blog from "./pages/Blog/Blog.jsx"
 import Projects from "./pages/Projects.jsx"
 import Admin from "./pages/Admin/Admin.jsx"
 import PostPage from "./pages/postPage.jsx"

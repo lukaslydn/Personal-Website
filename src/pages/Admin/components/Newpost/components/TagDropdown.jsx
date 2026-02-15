@@ -7,6 +7,7 @@ import { loadTags } from "../api/loadTags"
 
 function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
 
+  // ===================== States ====================
   const TAG_COLORS = [
     "#0a8dffff", // Blue
     "#00ff40ff", // Green
@@ -20,8 +21,16 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
   const [newTag, setNewTag] = useState("")
   const [newIcon, setNewIcon] = useState("")
   const [newColor, setNewColor] = useState(TAG_COLORS[0])
-
   const [tags, setTags] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    handleLoadTags()
+  }, [])
+
+
+  // ===================== Handlers ====================
+  // This function loads all tags from the database and sets the tags state. It's called when the component mounts and after creating or deleting a tag to refresh the list.
   const handleLoadTags = async () => {
     const result = await loadTags()
     if (result.error) {
@@ -31,6 +40,7 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
 
     setTags(result)
   }
+  // This function creates a new tag in the database using the values from the newTag, newIcon, and newColor states. After creating the tag, it reloads the tags to update the list.
   async function createTag({ tag, icon, color }) {
     const { error } = await supabase.from("tags").insert({
       tag,
@@ -47,24 +57,21 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
     return true
   }
 
-    useEffect(() => {
-      handleLoadTags()
-  }, [])
 
   async function deleteTag(id) {
     if (!window.confirm("Are you sure you want to delete this tag? Will remove from all posts permently")) return
 
-    const { error } = await supabase.from("tags").delete().eq("id", id)
+    const { error } = await supabase.from("tags").delete().eq("id", id) // Deletes the tag with the given id from the "tags" table in the database using Supabase
     if (error) {
       alert(error.message)
     } else {
-      setSelectedTagIds(prev => prev.filter(t => t !== id))
+      setSelectedTagIds(prev => prev.filter(t => t !== id)) // If the deleted tag was selected, we also remove it from the selectedTagIds state to update the UI
       handleLoadTags()
    }
   }
 
-  const [isOpen, setIsOpen] = useState(false)
 
+  // Adds the selected tag to the selectedTagIds state if it's not already there, and then closes the dropdown menu. This function is called when the user clicks on a tag in the dropdown to select it.
   function selectTag(id) {
     setSelectedTagIds(prev =>
       prev.includes(id) ? prev : [...prev, id]
@@ -72,21 +79,24 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
     setIsOpen(false) // ⬅️ close menu on select
   }
 
+  // Removes the tag from the selectedTags
   function removeTag(id) {
     setSelectedTagIds(prev =>
       prev.filter(t => t !== id)
     )
   }
 
+
+
   return (
     <div className="tag-select">
       {/* Selected pills */}
       <div className="tag-pills">
-        {selectedTagIds.map(id => {
+        {selectedTagIds.map(id => { // For each selected tag id, we find the corresponding tag object from the tags state to display its name and color in the UI
           const tag = tags.find(t => t.id === id)
           if (!tag) return null
 
-          return (
+          return ( // Each selected tag is displayed as a pill with its name and a close icon to remove it from the selection. The background color of the pill is set to the tag's color, and the text color is determined based on whether the color is dark or light for better readability.
             <span
               key={id}
               className="tag-pill"
@@ -101,7 +111,7 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
         })}
       </div>
 
-      {/* Toggle */}
+      {/* Toggle button to open/close the tag dropdown */}
       <button
         type="button"
         className="tag-toggle"
@@ -110,9 +120,7 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
         {isOpen ? "Close tags" : "Add tags"}
       </button>
 
-      {/* Floating dropdown */}
-
-
+      {/* Floating dropdown for tag selection and creation */}
       {isOpen && (
         <div className="tag-dropdown floating">
 
@@ -126,9 +134,7 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
                     key={tag.id}
                     className="tag-option"
                     onClick={() => selectTag(tag.id)}
-                    style={{ "--tag-bg": tag.color,
-                      color: isHexDark(tag.color) ? "#fff" : "#111"
-                     }}
+                    style={{ "--tag-bg": tag.color, color: isHexDark(tag.color) ? "#fff" : "#111" }}
                   >
                     {tag.icon && <ion-icon name={tag.icon} />}
                     <span>{tag.tag}</span>
@@ -138,6 +144,7 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
                   </div>
                 ))}
 
+              {/* Button to switch to create mode */}
               <button
                 className="create-tag"
                 onClick={() => setMode("create")}
@@ -150,12 +157,14 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
           {/* CREATE MODE */}
           {mode === "create" && (
             <div className="tag-create">
+              {/* Input for new tag name */}
               <input
                 placeholder="Tag name"
                 value={newTag}
                 onChange={e => setNewTag(e.target.value)}
               />
 
+              {/* Input for new icon name */}
               <input
                 placeholder="Ionicon name"
                 value={newIcon}
@@ -165,20 +174,19 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
                 Browse icons
               </a>
 
-              {/* Color picker */}
+              {/* Color picker for selecting tag color */}
               <div className="color-picker">
                 {TAG_COLORS.map(color => (
                   <button
                     key={color}
                     style={{ background: color }}
-                    className={
-                      color === newColor ? "color selected" : "color"
-                    }
+                    className={color === newColor ? "color selected" : "color"}
                     onClick={() => setNewColor(color)}
                   />
                 ))}
               </div>
 
+              {/* Actions for creating or canceling the new tag */}
               <div className="create-actions">
                 <button onClick={() => setMode("select")}>
                   Cancel
@@ -207,7 +215,6 @@ function TagDropdown({ selectedTagIds, setSelectedTagIds }) {
           )}
         </div>
       )}
-
     </div>
   )
 };

@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../supabase-client";
-import Loader from "../../components/Loading";
+
 
 import NewPost from "./components/Newpost/NewPost";
 
@@ -9,7 +9,7 @@ import "./Admin.css";
 
 function Admin() {
 
-  // Auth States
+  // ==================== Auth States ====================
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [session, setSession] = useState(null);
@@ -72,7 +72,7 @@ function Admin() {
     );
   }
 
-  else if (session) {
+  else if (session) { // If the user is logged in, show the admin dashboard
   // ==================== DASHBOARD ====================
     return (
       <div className="admin-container">
@@ -88,6 +88,10 @@ function Admin() {
 
 export default Admin;
 
+
+// ==================== COMPONENTS ====================
+
+// Login form component
 function AdminLogin({ email, setEmail, password, setPassword, handleLogin, errorText }) {
   return (
     <div>
@@ -115,6 +119,8 @@ function AdminLogin({ email, setEmail, password, setPassword, handleLogin, error
   )
 };
 
+
+// Account dashboard component (shown when logged in)
 function AdminAccountDashboard() {
   return (
   <div className="admin-account-header">
